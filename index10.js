@@ -10,7 +10,7 @@ Note.prototype.toString = function ()
 
 ServerNotes = [];
 // save typing time, make up 3 for testing
-ServerNotes.push(new Note("Eng101", "Moonday 5/18","11:59 pm", "d"));
+ServerNotes.push(new Note("Eng101", "Monday 5/18","11:59 pm", "d"));
  ServerNotes.push(new Note("Prog209", "Monday 5/18", "11:59 pm","n"));
  ServerNotes.push(new Note("Play vid game", "Saturday 7/23", "10:30 am","s"));
  
