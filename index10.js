@@ -48,16 +48,12 @@ router.post('/AddNote', function(req, res) {
   ServerNotes.push(newNote);
   res.status(200).json(newNote);
 });
-router.post('/AddNote', function(req, res) {
+router.post('/AddNote2', function(req, res) {
   const newNote2 = req.body;
-  ServerNotes.push(newNote);
-  res.status(200).json(newNote);
+  ServerNotes.push(newNote2);
+  res.status(200).json(newNote2);
 });
-router.post('/AddNote', function(req, res) {
-  const newNote3 = req.body;
-  ServerNotes.push(newNote);
-  res.status(200).json(newNote);
-});
+
 
 
 router.delete('/DeleteNote/:title', (req, res) => {
@@ -86,5 +82,4 @@ router.delete('/DeleteNote/:title', (req, res) => {
 
 
 module.exports = router;
-
 
