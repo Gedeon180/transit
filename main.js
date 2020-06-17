@@ -1,8 +1,3 @@
-Notes =[];
-Notess=[];
-Notesd=[];
-Notesn=[];
-
 let titles="";
 let displaytitles=document.getElementById("displaytitles");
 let displaytitles2=document.getElementById("displaytitles2");
@@ -15,20 +10,27 @@ this.statut=pStatut;};
 
 function uptitles()
   { $.get("/getAllNotes", function(data, status){  // AJAX get
-  Notes = data;});function display(){titles="";for (let i=0;i<Notes.length;i++){ titles+=Notes[i].title+" , ";};}display();
+  let Notes = data;});
+  $.get("/getnNotes", function(data, status){  // AJAX get
+  let Notesn = data;});
+  $.get("/getsNotes", function(data, status){  // AJAX get
+  let Notess = data;});
+  $.get("/getdNotes", function(data, status){  // AJAX get
+ let Notesd = data;});
+  function display(){titles="";for (let i=0;i<Notes.length;i++){ titles+=Notes[i].title+" , ";};}display();
   document.getElementById("displaytitles").innerHTML="<b>These are Your Titles: "+titles+"<b>";
   document.getElementById("displaytitles2").innerHTML="<b>These are Your Titles: "+titles+"<b>";};
   
   
   function filterit()
    {$.get("/getAllNotes", function(data, status){  // AJAX get
-  Notes = data;});
+  let Notes = data;});
   $.get("/getnNotes", function(data, status){  // AJAX get
-  Notesn = data;});
+  let Notesn = data;});
   $.get("/getsNotes", function(data, status){  // AJAX get
-  Notess = data;});
+  let Notess = data;});
   $.get("/getdNotes", function(data, status){  // AJAX get
-  Notesd = data;});
+ let Notesd = data;});
  for (let i=0;i<Notess.length;i++)
  {document.getElementById("listUl2").innerHTML=Notess[i].title+" due on "+Notess[i].day+" at "+Notess[i].time+"<br>";};
 	for (let i=0;i<Notesd.length;i++)
@@ -47,7 +49,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     
     $(document).on('pagebeforeshow', '#Edit', function () {
        // let deleteListUl = document.getElementById("deleteListUl");
-        document.getElementById("deleteItem").value = "";filterit();uptitles();} );
+        //document.getElementById("deleteItem").value = "";
+		filterit();uptitles();} );
 		
 	//
 
@@ -95,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     console.log('Error in Operation');  
                     alert("Server could not delete Note with title " + which)
                 }  
-            });document.getElementById("deleteItem").value="";filterit();uptitles();
+            });filterit();uptitles();document.getElementById("deleteItem").value="";
 
      });
  ;});  
@@ -193,6 +196,4 @@ document.getElementById("edititem2").value = "";
 //
 
  
-
-//
 
