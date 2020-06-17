@@ -1,10 +1,3 @@
-Notes=[];
-Notess=[];
-Notesd=[];
-Notesn=[];
-
-
-
 let titles="";
 let displaytitles=document.getElementById("displaytitles");
 let displaytitles2=document.getElementById("displaytitles2");
@@ -14,7 +7,14 @@ let found3 = false;
 //
 
 function uptitles()
-  {function display(){titles="";for (let i=0;i<Notes.length;i++){ titles+=Notes[i].title+" , ";};}display();
+  {let Notes;let Notess;let Notesn;let Notesd;$.get("/getAllNotes", function(data, status){  // AJAX get
+   Notes =data;});
+   $.get("/getdNotes", function(data, status){  // AJAX get
+   Notesd = data;});
+		 $.get("/getsNotes", function(data, status){  // AJAX get
+         Notess = data;});
+	$.get("/getnNotes", function(data, status){  // AJAX get
+	Notesn = data;});function display(){titles="";for (let i=0;i<Notes.length;i++){ titles+=Notes[i].title+" , ";};}display();
   document.getElementById("displaytitles").innerHTML="<b>These are Your Titles: "+titles+"<b>";
   document.getElementById("displaytitles2").innerHTML="<b>These are Your Titles: "+titles+"<b>";}
   
@@ -22,13 +22,13 @@ function uptitles()
 
 function filterit()
    {$.get("/getAllNotes", function(data, status){  // AJAX get
-   Notes =data;});
-   $.get("/getdNotes", function(data, status){  // AJAX get
-   Notesd = data;});
+   let Notes =data;});
+    $.get("/getdNotes", function(data, status){  // AJAX get
+  let Notesd = data;});
 		 $.get("/getsNotes", function(data, status){  // AJAX get
-         Notess = data;});
+         let Notess = data;});
 	$.get("/getnNotes", function(data, status){  // AJAX get
-	Notesn = data;});
+	let Notesn = data;});
 	document.getElementById("listUl2").innerHTML=Notess;
 	document.getElementById("listUl3").innerHTML=Notesd;
 	document.getElementById("listUl").innerHTML=Notesn;};
@@ -46,14 +46,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     $(document).on('pagebeforeshow', '#Home', function () {
         let listUl = document.getElementById("listUl");
-        UpdateDisplay(listUl); });
+        //UpdateDisplay(listUl); 
+		});
 		
 	//
 
     
     $(document).on('pagebeforeshow', '#Delete', function () {
         let deleteListUl = document.getElementById("deleteListUl");
-        UpdateDisplay(deleteListUl);   
+        //UpdateDisplay(deleteListUl);   
         document.getElementById("deleteItem").value = "";filterit();uptitles();} );
 		
 	//
@@ -167,7 +168,7 @@ function changing()
             }); 
 		
 			
-			found2 = true;filterit();uptitles();}}
+			found2 = true;filterit();uptitles();}};
 		
    if(!found2){document.getElementById("statum").value = "Sorry, could not find";};
 document.getElementById("edititem").value="";
@@ -246,7 +247,5 @@ document.getElementById("edititem2").value = "";
 
 
 //
-
-
 
 
