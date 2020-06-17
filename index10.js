@@ -4,11 +4,11 @@ var router = express.Router();
 // our constructor
 function Note(pTitle, pDay, pTime,pStatut) 
 {this.title= pTitle; this.day = pDay; this.time = pTime; 
-this.statut=pStatut; };
+this.statut=pStatut;};
 Note.prototype.toString = function () 
 {return this.title+" due on "+ this.day+ " at "+ this.time+"<br>";};
 
-ServerNotes = [];ServerNotess=[];ServerNotesn=[];ServerNotesd=[];
+ServerNotes = [];
 // save typing time, make up 3 for testing
 ServerNotes.push(new Note("Eng101", "Moonday 5/18","11:59 pm", "d"));
  ServerNotes.push(new Note("Prog209", "Monday 5/18", "11:59 pm","n"));
@@ -48,6 +48,16 @@ router.post('/AddNote', function(req, res) {
   ServerNotes.push(newNote);
   res.status(200).json(newNote);
 });
+router.post('/AddNote', function(req, res) {
+  const newNote2 = req.body;
+  ServerNotes.push(newNote);
+  res.status(200).json(newNote);
+});
+router.post('/AddNote', function(req, res) {
+  const newNote3 = req.body;
+  ServerNotes.push(newNote);
+  res.status(200).json(newNote);
+});
 
 
 router.delete('/DeleteNote/:title', (req, res) => {
@@ -76,3 +86,5 @@ router.delete('/DeleteNote/:title', (req, res) => {
 
 
 module.exports = router;
+
+
