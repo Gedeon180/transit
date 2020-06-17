@@ -1,71 +1,63 @@
+Notes =[];
+Notess=[];
+Notesd=[];
+Notesn=[];
+
 let titles="";
 let displaytitles=document.getElementById("displaytitles");
 let displaytitles2=document.getElementById("displaytitles2");
 let found2 = false;
 let found3 = false;
 
-//
+function Note(pTitle, pDay, pTime,pStatut) 
+{this.title= pTitle; this.day = pDay; this.time = pTime; 
+this.statut=pStatut;};
 
 function uptitles()
-  {let Notes;let Notess;let Notesn;let Notesd;$.get("/getAllNotes", function(data, status){  // AJAX get
-   Notes =data;});
-   $.get("/getdNotes", function(data, status){  // AJAX get
-   Notesd = data;});
-		 $.get("/getsNotes", function(data, status){  // AJAX get
-         Notess = data;});
-	$.get("/getnNotes", function(data, status){  // AJAX get
-	Notesn = data;});function display(){titles="";for (let i=0;i<Notes.length;i++){ titles+=Notes[i].title+" , ";};}display();
+  { $.get("/getAllNotes", function(data, status){  // AJAX get
+  Notes = data;});function display(){titles="";for (let i=0;i<Notes.length;i++){ titles+=Notes[i].title+" , ";};}display();
   document.getElementById("displaytitles").innerHTML="<b>These are Your Titles: "+titles+"<b>";
-  document.getElementById("displaytitles2").innerHTML="<b>These are Your Titles: "+titles+"<b>";}
+  document.getElementById("displaytitles2").innerHTML="<b>These are Your Titles: "+titles+"<b>";};
   
-//
-
-function filterit()
+  
+  function filterit()
    {$.get("/getAllNotes", function(data, status){  // AJAX get
-   let Notes =data;});
-    $.get("/getdNotes", function(data, status){  // AJAX get
-  let Notesd = data;});
-		 $.get("/getsNotes", function(data, status){  // AJAX get
-         let Notess = data;});
-	$.get("/getnNotes", function(data, status){  // AJAX get
-	let Notesn = data;});
-	document.getElementById("listUl2").innerHTML=Notess;
-	document.getElementById("listUl3").innerHTML=Notesd;
-	document.getElementById("listUl").innerHTML=Notesn;};
+  Notes = data;});
+  $.get("/getnNotes", function(data, status){  // AJAX get
+  Notesn = data;});
+  $.get("/getsNotes", function(data, status){  // AJAX get
+  Notess = data;});
+  $.get("/getdNotes", function(data, status){  // AJAX get
+  Notesd = data;});
+ for (let i=0;i<Notess.length;i++)
+ {document.getElementById("listUl2").innerHTML=Notess[i].title+" due on "+Notess[i].day+" at "+Notess[i].time+"<br>";};
+	for (let i=0;i<Notesd.length;i++)
+ {document.getElementById("listUl3").innerHTML=Notesd[i].title+" due on "+Notesd[i].day+" at "+Notesd[i].time+"<br>";};
+	for (let i=0;i<Notesn.length;i++)
+ {document.getElementById("listUl").innerHTML=Notesn[i].title+" due on "+Notesn[i].day+" at "+Notesn[i].time+"<br>";};
+	};
 		
-//
   
- 
-//
+  
 
 document.addEventListener("DOMContentLoaded", function (event) {
 	
-	filterit();  uptitles();
-	
-	//
-
-    $(document).on('pagebeforeshow', '#Home', function () {
-        let listUl = document.getElementById("listUl");
-        //UpdateDisplay(listUl); 
-		});
-		
-	//
+	  uptitles();filterit();
 
     
-    $(document).on('pagebeforeshow', '#Delete', function () {
-        let deleteListUl = document.getElementById("deleteListUl");
-        //UpdateDisplay(deleteListUl);   
+    $(document).on('pagebeforeshow', '#Edit', function () {
+       // let deleteListUl = document.getElementById("deleteListUl");
         document.getElementById("deleteItem").value = "";filterit();uptitles();} );
 		
 	//
 
 
     document.getElementById("newNote").addEventListener("click", function () {
-		let newNote = new Note( document.getElementById("title").value, 
+        let newNote = new Note( document.getElementById("title").value, 
            document.getElementById("day").value,
-           document.getElementById("time").value ,document.getElementById("statut").value) ;
+           document.getElementById("time").value, document.getElementById("statut").value) ;
         
-        $.ajax({
+		$.ajax({
             url : "/AddNote",
             type: "POST",
             data: JSON.stringify(newNote),
@@ -85,11 +77,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		document.getElementById("statut").value="";
  });
  
+     //
+
      
      
 	 document.getElementById("delete").addEventListener("click", function () {
-       let which = document.getElementById("deleteItem").value;
-       let found = false;
+        let which = document.getElementById("deleteItem").value;
+
         $.ajax({
             type: "DELETE",
                 url: "/DeleteNote/" +which,
@@ -99,11 +93,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 },
                 error: function (xhr, textStatus, errorThrown) {  
                     console.log('Error in Operation');  
-                    //alert("Server could not delete Note with title " + which)
+                    alert("Server could not delete Note with title " + which)
                 }  
-            }); found = true;filterit();uptitles();}}
-       if(!found){document.getElementById("deleteItem").value = "Sorry, could not find";};
-       document.getElementById("deleteItem").value="";})
+            });document.getElementById("deleteItem").value="";filterit();uptitles();
+
+     });
  ;});  
  
  
@@ -123,62 +117,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
 	$(document).on('pagebeforeshow', '#Edit', function () {
         document.getElementById("edititem").value = ""; 
         document.getElementById("statum").value = ""; 
-        document.getElementById("edititem2").value  = ""; 
+        document.getElementById("edititem2").value  = ""; filterit();uptitles();
 		
     });
 	
-//
-function Note(pTitle, pDay, pTime,pStatut) 
-{this.title= pTitle; this.day = pDay; this.time = pTime; 
- this.statut=pStatut; };
- Note.prototype.toString = function () 
-{return this.title+" due on "+ this.day+ " at "+ this.time+"<br>";};
-
-
-
-function changing()
-  {let whicha = document.getElementById("edititem").value;let stata=document.getElementById("statum").value;
-  let found2 = false;let newNote2;
-  
-      for(var i = 0; i < Notes.length; i++) 
-        {if(Notes[i].title === whicha){Notes[i].statut=stata;
-			newNote2=new Note(Note[i].title,Note[i].day,Note[i].time,Note[i].statut); 
-			$.ajax({
-            url : "/AddNote",
-            type: "POST",
-            data: JSON.stringify(newNote2),
-            contentType: "application/json; charset=utf-8",
-            dataType   : "json",
-            success: function (result) {
-                console.log(result);
-                //document.location.href = "index.html#Show";  // go to this page to show item was added
-            }
-        });
-		$.ajax({
-            type: "DELETE",
-                url: "/DeleteNote/" +whicha,
-                success: function(result){
-                    console.log(result);
-                    //document.location.href = "index.html#Show";  // go to this page to show item was deleted
-                },
-                error: function (xhr, textStatus, errorThrown) {  
-                    console.log('Error in Operation');  
-                    //alert("Server could not delete Note with title " + which)
-                }  
-            }); 
-		
-			
-			found2 = true;filterit();uptitles();}};
-		
-   if(!found2){document.getElementById("statum").value = "Sorry, could not find";};
-document.getElementById("edititem").value="";
-document.getElementById("statum").value="";};
-	 
-	 
-//
-	
-	
-function changing2()
+	function changing2()
  {
 	let whicha2 = document.getElementById("edititem2").value;
 	let found3 = false;
@@ -191,7 +134,19 @@ function changing2()
             document.getElementById("title2").value=Notes[i].title; 				
             document.getElementById("time2").value=Notes[i].time;
 			document.getElementById("statut2").value=Notes[i].statut;
-			found3 = true;};};
+			found3 = true;
+			$.ajax({
+            type: "DELETE",
+                url: "/DeleteNote/" +whicha2,
+                success: function(result){
+                    console.log(result);
+                    //document.location.href = "index.html#Show";  // go to this page to show item was deleted
+                },
+                error: function (xhr, textStatus, errorThrown) {  
+                    console.log('Error in Operation');  
+                    alert("Server could not delete Note with title " + which)
+                }  
+            });};};
 			
         if(!found3){
             document.getElementById("edititem2").value = "Sorry, could not find";};
@@ -205,7 +160,7 @@ function changing2()
 	
 function changing3()
   {
-	let whicha2 = document.getElementById("edititem2").value;let newNote3;
+	let whicha2 = document.getElementById("edititem2").value;
 	
  for(var i = 0; i < Notes.length; i++) 
 	{if(Notes[i].title === whicha2)
@@ -213,30 +168,19 @@ function changing3()
      Notes[i].title=document.getElementById("title2").value; 				
       Notes[i].time=document.getElementById("time2").value;
 	Notes[i].statut=document.getElementById("statut2").value;
-	newNote3=new Note(Note[i].title,Note[i].day,Note[i].time,Note[i].statut);
+	let newNote2=new Note(document.getElementById("day2").value,document.getElementById("day2").value,
+	document.getElementById("day2").value,document.getElementById("day2").value);
 	$.ajax({
-            url : "/AddNote",
+            url : "/AddNote2",
             type: "POST",
-            data: JSON.stringify(newNote3),
+            data: JSON.stringify(newNote2),
             contentType: "application/json; charset=utf-8",
             dataType   : "json",
             success: function (result) {
                 console.log(result);
                 //document.location.href = "index.html#Show";  // go to this page to show item was added
             }
-        });$.ajax({
-            type: "DELETE",
-                url: "/DeleteNote/" +whicha2,
-                success: function(result){
-                    console.log(result);
-                    //document.location.href = "index.html#Show";  // go to this page to show item was deleted
-                },
-                error: function (xhr, textStatus, errorThrown) {  
-                    console.log('Error in Operation');  
-                    //alert("Server could not delete Note with title " + which)
-                }  
-            }); 
-	}};
+        });};};
 	
  document.getElementById("section1").style.display = "block";
  document.getElementById("section2").style.display = "none";filterit();uptitles();
@@ -244,8 +188,11 @@ document.getElementById("edititem2").value = "";
   };
   
   
-
-
+	
+  
 //
 
+ 
+
+//
 
