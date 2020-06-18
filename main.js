@@ -1,28 +1,4 @@
-let titles="";
-let displaytitles=document.getElementById("displaytitles");
-let displaytitles2=document.getElementById("displaytitles2");
-let found2 = false;
-let found3 = false;
-
-function Note(pTitle, pDay, pTime,pStatut) 
-{this.title= pTitle; this.day = pDay; this.time = pTime; 
-this.statut=pStatut;};
-
-function uptitles()
-  { $.get("/getAllNotes", function(data, status){  // AJAX get
-  let Notes = data;});
-  $.get("/getnNotes", function(data, status){  // AJAX get
-  let Notesn = data;});
-  $.get("/getsNotes", function(data, status){  // AJAX get
-  let Notess = data;});
-  $.get("/getdNotes", function(data, status){  // AJAX get
- let Notesd = data;});
-  function display(){titles="";for (let i=0;i<Notes.length;i++){ titles+=Notes[i].title+" , ";};}display();
-  document.getElementById("displaytitles").innerHTML="<b>These are Your Titles: "+titles+"<b>";
-  document.getElementById("displaytitles2").innerHTML="<b>These are Your Titles: "+titles+"<b>";};
-  
-  
-  function filterit()
+function filterit()
    {$.get("/getAllNotes", function(data, status){  // AJAX get
   let Notes = data;});
   $.get("/getnNotes", function(data, status){  // AJAX get
@@ -31,12 +7,18 @@ function uptitles()
   let Notess = data;});
   $.get("/getdNotes", function(data, status){  // AJAX get
  let Notesd = data;});
- for (let i=0;i<Notess.length;i++)
- {document.getElementById("listUl2").innerHTML=Notess[i].title+" due on "+Notess[i].day+" at "+Notess[i].time+"<br>";};
-	for (let i=0;i<Notesd.length;i++)
- {document.getElementById("listUl3").innerHTML=Notesd[i].title+" due on "+Notesd[i].day+" at "+Notesd[i].time+"<br>";};
-	for (let i=0;i<Notesn.length;i++)
- {document.getElementById("listUl").innerHTML=Notesn[i].title+" due on "+Notesn[i].day+" at "+Notesn[i].time+"<br>";};
+ function displays(){titless="";for (let i=0;i<Notes.length;i++){ titless+=Notess[i].title+" due on "+Notess[i].day+" at "+Notess[i].time+"<br>";};}displays();
+ document.getElementById("listUl2").innerHTML=titless;
+ function displayd(){titlesd="";for (let i=0;i<Notes.length;i++){ titlesd+=Notesd[i].title+" due on "+Notesd[i].day+" at "+Notesd[i].time+"<br>";};}displayd();
+ document.getElementById("listUl3").innerHTML=titlesd;
+ function displayn(){titlesn="";for (let i=0;i<Notes.length;i++){ titlesn+=Notesn[i].title+" due on "+Notesn[i].day+" at "+Notesn[i].time+"<br>";};}displayn();
+ document.getElementById("listUln").innerHTML=titlesn;
+	
+	};
+
+
+
+at "+Notesn[i].time+"<br>";};
 	};
 		
   
